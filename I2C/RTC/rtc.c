@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stddef.h>
+#include <string.h>
 #include <unistd.h>
 #include <fcntl.h>
 #include <sys/ioctl.h>
@@ -68,10 +69,20 @@ RTC_Time getRTCTime() {
     return time;
 }
 
-int main(int argc, char **argv){
+int main(int argc, char *argv[]){
 
         /* Get RTC timestamp */
         RTC_Time currentTime = getRTCTime();
+
+        if (argc == 2 && strcmp(argv[1], "--iso8601") == 0) {
+            printf("%04d-%02d-%02dT%02d:%02d:%02d\n",
+                currentTime.year,
+                currentTime.month,
+                currentTime.day,
+                currentTime.hour,
+                currentTime.minute,
+                currentTime.second);
+        } else {
 
         printf("%04d_%02d_%02d_%02d_%02d_%02d\n",
             currentTime.year,
@@ -80,6 +91,7 @@ int main(int argc, char **argv){
             currentTime.hour,
             currentTime.minute,
             currentTime.second);
+        }
 
         return 0;
 }
