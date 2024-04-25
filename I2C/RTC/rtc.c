@@ -58,7 +58,7 @@ RTC_Time getRTCTime() {
         // Convert the BCD values to normal decimal numbers
         time.second = bcdToDec(buf[0]);
         time.minute = bcdToDec(buf[1]);
-        time.hour = bcdToDec(buf[2] & 0x3F); // Adjust for 24-hour clock
+        time.hour = bcdToDec(buf[2]); // Adjust for 24-hour clock
         // Assuming day, date, month, year order after time in DS3231
         time.day = bcdToDec(buf[4]);
         time.month = bcdToDec(buf[5]);
@@ -74,6 +74,7 @@ int main(int argc, char *argv[]){
         /* Get RTC timestamp */
         RTC_Time currentTime = getRTCTime();
 
+        /* Print in ISO 8601 format */
         if (argc == 2 && strcmp(argv[1], "--iso8601") == 0) {
             printf("%04d-%02d-%02dT%02d:%02d:%02d\n",
                 currentTime.year,
@@ -83,7 +84,7 @@ int main(int argc, char *argv[]){
                 currentTime.minute,
                 currentTime.second);
         } else {
-
+        /* Print in format used in filenames*/
         printf("%04d_%02d_%02d_%02d_%02d_%02d\n",
             currentTime.year,
             currentTime.month,
